@@ -25,7 +25,7 @@ const props = defineProps({
       <span
         class="text-blue-500 cursor-pointer"
         @click="$emit('handleForm', true)"
-        >Login now.</span
+        >login now.</span
       >
     </p>
   </div>

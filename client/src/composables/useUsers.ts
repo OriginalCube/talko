@@ -6,15 +6,38 @@ interface UserProps {
   email: string;
 }
 
+interface LoginProps {
+  username: string;
+  password: string;
+}
+
 const api_url = "/api/v1/user";
 
 import axios from "axios";
 
 export const useUsers = () => {
   const create = async (user: UserProps) => {
-    const test = await axios.post(`${api_url}/create`, user);
-    return test;
+    const createUser = await axios.post(`${api_url}/create`, user);
+    if (createUser.status === 201) {
+      return { status: 201, message: "Successfully created the account." };
+    } else {
+      return {
+        status: createUser.status,
+        message: "Error in creating account.",
+      };
+    }
   };
 
-  return { create };
+  const login = async (user: LoginProps) => {
+    const loginUser = await axios.post(`${api_url}/login`, user);
+    console.log(loginUser);
+    if (loginUser.status === 200) {
+      localStorage.setItem("vc-token", JSON.stringify(loginUser.data));
+      return { status: 200, message: "" };
+    } else {
+      return { status: loginUser.status, message: "Errors loggin user." };
+    }
+  };
+
+  return { create, login };
 };

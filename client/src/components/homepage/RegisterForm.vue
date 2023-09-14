@@ -10,13 +10,19 @@ const userDetails = ref({
 });
 
 const err = ref("");
+const suc = ref("");
 
 const handleSubmit = async () => {
   if (userDetails.value.password === userDetails.value.confirmPassowrd) {
     err.value = "";
     const create = await useUsers().create(userDetails.value);
-    console.log(create);
+    if (create.status === 201) {
+      suc.value = create.message;
+    } else {
+      err.value = create.message;
+    }
   } else {
+    suc.value = "";
     err.value = "Passwords do not match.";
   }
 };
@@ -60,6 +66,7 @@ const handleSubmit = async () => {
       ></v-text-field>
     </div>
     <p class="text-red-500 text-sm" v-if="err.length">{{ err }}</p>
-    <v-btn variant="outlined" @click="handleSubmit">Submit</v-btn>
+    <p class="text-green-500 text-sm" v-if="suc.length">{{ suc }}</p>
+    <v-btn variant="outlined" @click="handleSubmit">Register</v-btn>
   </div>
 </template>
