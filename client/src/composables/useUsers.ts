@@ -30,9 +30,8 @@ export const useUsers = () => {
 
   const login = async (user: LoginProps) => {
     const loginUser = await axios.post(`${api_url}/login`, user);
-    console.log(loginUser);
     if (loginUser.status === 200) {
-      localStorage.setItem("vc-token", JSON.stringify(loginUser.data));
+      localStorage.setItem("vc-token", JSON.stringify(loginUser.data._id));
       return { status: 200, message: "" };
     } else {
       return { status: loginUser.status, message: "Errors loggin user." };
